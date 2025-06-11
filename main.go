@@ -2,6 +2,7 @@ package main
 
 import (
 	"go-initializr/app/initializer"
+	"go-initializr/app/pkg"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -9,6 +10,7 @@ import (
 
 func main() {
 	e := echo.New()
+	e.Validator = pkg.NewCustomValidator()
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
