@@ -66,6 +66,11 @@ var (
 
 	// InternalServerError
 	ErrInternalServerError = CustomError(http.StatusInternalServerError, 50001, "Something bad happened")
+	ErrOpeningFile         = CustomError(http.StatusInternalServerError, 50002, "Error opening folder")
+	ErrScanner             = CustomError(http.StatusInternalServerError, 50003, "Error bufio scanner")
+	ErrCreatingFolder      = CustomError(http.StatusInternalServerError, 50004, "Error creating folder")
+	ErrCreatingFile        = CustomError(http.StatusInternalServerError, 50005, "Error creating file")
+	ErrExecutingTemplate   = CustomError(http.StatusInternalServerError, 50006, "Error executing template")
 )
 
 func ErrorBuilder(res *Error, message error) *Error {
