@@ -1,3 +1,3 @@
-module go_initializr
+module go-initializr
 
 go 1.24.1
