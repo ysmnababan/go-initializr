@@ -1,5 +1,16 @@
 package initializer
 
+import (
+	"bufio"
+	"fmt"
+
+	"go-initializr/app/pkg/response"
+	"os"
+	"strings"
+
+	"github.com/google/uuid"
+)
+
 type service struct {
 }
 
@@ -8,9 +19,37 @@ func NewService() *service {
 }
 
 func (s *service) InitializeBoilerplate(req *BasicConfigRequest) (folderId string, err error) {
-	return
+	// load the folder structure template
+	file, err := os.Open(FOLDER_STRUCTURE_PATH)
+	if err != nil {
+		err = response.ErrorWrap(response.ErrOpeningFile, err)
+		return
+	}
+
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	rootNode := &Node{}
+	for scanner.Scan() {
+		line := strings.TrimRight(scanner.Text(), " ")
+		rootNode.ParseLine(line)
+	}
+	if err = scanner.Err(); err != nil {
+		err = response.ErrorWrap(response.ErrScanner, err)
+		return
+	}
+
+	// create the boilerplate project
+	folderId = fmt.Sprintf("%s-%s", req.ProjectName, uuid.NewString())
+	rootName := fmt.Sprintf("%s/%s", GENERATED_ROOT_FOLDER, folderId)
+	err = rootNode.GenerateFolder(rootName, req)
+	if err != nil {
+		return
+	}
+
+	return folderId, nil
 }
 
-func (s *service) DownloadProjectByFolderID(folderID string) (err error){
+func (s *service) DownloadProjectByFolderID(folderID string) (err error) {
 	return
 }
