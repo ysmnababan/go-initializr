@@ -1,0 +1,57 @@
+package main
+
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/labstack/echo/v4"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
+
+	"{{ .ProjectName }}/config"
+	middleware "{{ .ProjectName }}/internals/middleware"
+	httpserver "{{ .ProjectName }}/internals/server"
+	"{{ .ProjectName }}/internals/factory"
+	"{{ .ProjectName }}/internals/utils/env"
+	"{{ .ProjectName }}/internals/pkg/database"
+)
+
+func init() {
+	selectedEnv := config.Env()
+	env := env.NewEnv()
+	env.Load(`.env`)
+	log.Info().Msg("Choosen environment " + selectedEnv)
+}
+{{ if .Swagger }}
+// @title {{ .ProjectName }}-Project
+// @version 0.0.1
+// @description This is a doc for {{ .ProjectName }}-Project
+
+// @securityDefinitions.apikey Authorization
+// @in header
+// @name Authorization{{ end }}
+func main() {
+	cfg := config.Get()
+
+	port := cfg.App.Port
+
+	logLevel, err := zerolog.ParseLevel(cfg.App.LogLevel)
+	if err != nil {
+		logLevel = zerolog.InfoLevel
+	}
+	zerolog.SetGlobalLevel(logLevel)
+
+	database.Init("std")
+
+	f := factory.NewFactory()
+
+	e := echo.New()
+	e.HideBanner = true
+	e.IPExtractor = echo.ExtractIPDirect()
+	middleware.Init(e{{ if .Redis}}, f.Redis{{ end }})
+	httpserver.Init(e, f)
+
+	if err := e.Start(fmt.Sprintf(":%d", port)); err != nil && err != http.ErrServerClosed {
+		e.Logger.Fatal("shutting down the server")
+	}
+}

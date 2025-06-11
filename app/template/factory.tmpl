@@ -1,0 +1,43 @@
+package factory
+
+import (
+
+	"gorm.io/gorm"
+
+	"{{ .ProjectName }}/internals/pkg/database"
+    {{ if .Redis }}
+	"{{ .ProjectName }}/internals/pkg/redisutil" {{ end }}
+)
+
+type Factory struct {
+	Db      *gorm.DB
+
+    {{ if.Redis }}
+	Redis   *redisutil.Redis{{ end }}
+}
+
+func NewFactory() *Factory {
+
+	f := &Factory{}
+
+	f.SetupDb()
+    {{ if .Redis }}
+	f.SetupRedis() {{ end }}
+	return f
+}
+
+func (f *Factory) SetupDb() {
+	db := database.Connection()
+	f.Db = db
+}
+{{ if .Redis }}
+func (f *Factory) SetupRedis() {
+	f.Redis = redisutil.NewRedis()
+} {{ end }}
+
+
+func (f *Factory) SetupRepository() {
+	if f.Db == nil {
+		panic("Failed setup repository, db is undefined")
+	}
+}

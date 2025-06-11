@@ -1,0 +1,39 @@
+package server
+
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/labstack/echo/v4"
+    {{ if .Swagger }}
+	echoSwagger "github.com/swaggo/echo-swagger"
+	"{{ .ProjectName }}/docs"{{ end }}
+    "{{ .ProjectName }}/config"
+    "{{ .ProjectName }}/internals/factory"
+    "{{ .ProjectName }}/internals/app/example_feat"
+
+)
+
+func Init(e *echo.Echo, f *factory.Factory) {
+	cfg := config.Get()
+
+	// index
+	e.GET("/", func(c echo.Context) error {
+		message := fmt.Sprintf("Welcome to %s", cfg.App.Name)
+		return c.String(http.StatusOK, message)
+	})
+
+{{ if .Swagger}}
+	// doc
+	if config.Get().EnableSwagger {
+		docs.SwaggerInfo.Title = cfg.App.Name
+		docs.SwaggerInfo.Host = cfg.App.URL
+		docs.SwaggerInfo.Schemes = []string{cfg.App.Schema, "https"}
+		e.GET("/swagger/*", echoSwagger.WrapHandler)
+	} {{ end }}
+
+	// routes v1
+	api := e.Group("/api/v1")
+	
+    example_feat.NewHandler(f).Route(api.Group("/users"))
+}

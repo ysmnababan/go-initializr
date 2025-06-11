@@ -1,0 +1,62 @@
+package config
+
+type Config struct {
+	App AppConfig
+
+	DB    DBConfig
+{{ if .Redis }}
+	Redis RedisConfig
+{{ end }}
+{{ if .JWT }}    
+	JWT     JWTConfig
+{{ end }}
+{{ if .Swagger }}
+	EnableSwagger bool
+{{ end }}
+}
+
+type AppConfig struct {
+	Name     string
+	Version  string
+	Port     int
+	Schema   string
+	URL      string
+	LogLevel string
+}
+
+type DBConfig struct {
+	Host                string
+	Username            string
+	Password            string
+	Port                string
+	Name                string
+{{ if .DBPostgres }}
+	SSLMode             string
+	TimeZone            string
+{{ else if .DBMysql}}
+    Charset             string
+    ParseTime           string
+    Loc                 string
+{{ end }}
+	MaxIdleConns        int
+	MaxOpenConns        int
+	LogLevel            string
+}
+{{ if .JWT }}
+type JWTConfig struct {
+	Key              string
+	ExpiredIn        int
+	RefreshExpiredIn int
+}
+{{ end }}
+
+{{ if .Redis }}
+type RedisConfig struct {
+	Address         string
+	Password        string
+	MaxIdle         int
+	MaxActive       int
+	IdleTimeout     int
+	MaxConnLifeTime int
+}
+{{ end }}
