@@ -1,7 +1,7 @@
 package pkg
 
 import (
-	"go-initializr/app/initializer"
+	"go-initializr/app/common"
 
 	valid "github.com/go-playground/validator/v10"
 )
@@ -26,8 +26,8 @@ func (cv *customValidator) Validate(i any) error {
 
 func validateDbType(fl valid.FieldLevel) bool {
 	dbType := fl.Field().String()
-	switch initializer.DBType(dbType) {
-	case initializer.DB_POSTGRES, initializer.DB_MYSQL, initializer.DB_SQLSERVER:
+	switch common.DBType(dbType) {
+	case common.DB_POSTGRES, common.DB_MYSQL, common.DB_SQLSERVER:
 		return true
 	}
 	return false
@@ -35,8 +35,8 @@ func validateDbType(fl valid.FieldLevel) bool {
 
 func validateFrameworkType(fl valid.FieldLevel) bool {
 	frameworkType := fl.Field().String()
-	switch initializer.FrameWorkType(frameworkType) {
-	case initializer.FRAMEWORK_ECHO, initializer.FRAMEWORK_GIN:
+	switch common.FrameWorkType(frameworkType) {
+	case common.FRAMEWORK_ECHO, common.FRAMEWORK_GIN:
 		return true
 	}
 	return false
