@@ -5,7 +5,7 @@ root/
     config.go
     stringutils.go
     config_models.go
-  internal/
+  internals/
     abstraction/
       entity.go
       pagination.go
