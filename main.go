@@ -6,8 +6,16 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 )
+
+func init() {
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
+}
 
 func main() {
 	if err := os.MkdirAll(initializer.GENERATED_ROOT_FOLDER, os.ModePerm); err != nil {
@@ -25,5 +33,6 @@ func main() {
 	version1.POST("/initialize", handler.InitializeBoilerplate)
 	version1.GET("/initialize/download/:id", handler.DownloadFolder)
 	version1.POST("/reset-folder", handler.DeleteAllGeneratedProject)
-	e.Logger.Fatal(e.Start(":1323"))
+	port := os.Getenv("PORT")
+	e.Logger.Fatal(e.Start(":" + port))
 }
