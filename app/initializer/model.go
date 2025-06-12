@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"go-initializr/app/pkg"
 	"go-initializr/app/pkg/response"
-	"html/template"
+	"text/template"
 	"log"
 	"os"
 	"path/filepath"
@@ -49,6 +49,7 @@ func (n *Node) GenerateFile(root string, config *BasicConfigRequest) (err error)
 	fmt.Println(config.ProjectName)
 	err = tmpl.Execute(file, config)
 	if err != nil {
+		log.Println(err)
 		return response.ErrorWrap(response.ErrExecutingTemplate, err)
 	}
 	return nil
