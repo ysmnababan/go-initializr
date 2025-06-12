@@ -47,6 +47,13 @@ func (s *service) InitializeBoilerplate(req *BasicConfigRequest) (zipData []byte
 	targetPath := fmt.Sprintf("%s/%s", GENERATED_ROOT_FOLDER, folderId)
 	rootNode.Name = req.ProjectName
 	err = rootNode.GenerateFolder(targetPath, req)
+	defer func() {
+		log.Println("deleting unused folder")
+		err := os.RemoveAll(targetPath)
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 	if err != nil {
 		return
 	}
