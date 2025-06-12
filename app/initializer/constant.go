@@ -1,8 +1,9 @@
 package initializer
 
-const TEMPLATE_FOLDER_PATH string = "./../template"
-const FOLDER_STRUCTURE_PATH string = "./../template/folder-structure.yaml"
+const TEMPLATE_FOLDER_PATH string = "app/template"
+const FOLDER_STRUCTURE_PATH string = "app/template/folder-structure.yaml"
 const GENERATED_ROOT_FOLDER = "generated"
+const PROJECT_ROOT_FOLDER = "root"
 
 var TEMPLATE_REGISTRY = map[string]string{
 	".env":                "env.tmpl",
