@@ -3,10 +3,13 @@ package initializer
 import (
 	"bufio"
 	"fmt"
+	"os/exec"
 
 	"go-initializr/app/pkg/response"
 	"os"
 	"strings"
+
+	"log"
 
 	"github.com/google/uuid"
 )
@@ -19,7 +22,6 @@ func NewService() *service {
 }
 
 func (s *service) InitializeBoilerplate(req *BasicConfigRequest) (folderId string, err error) {
-	// load the folder structure template
 	file, err := os.Open(FOLDER_STRUCTURE_PATH)
 	if err != nil {
 		err = response.ErrorWrap(response.ErrOpeningFile, err)
@@ -48,7 +50,26 @@ func (s *service) InitializeBoilerplate(req *BasicConfigRequest) (folderId strin
 		return
 	}
 
+	projectDir := fmt.Sprintf("%s/%s", rootName, req.ProjectName)
+	fmt.Println("Initializing Go module in", projectDir)
+	if err = runCommand(projectDir, "go", "mod", "init", req.ProjectName); err != nil {
+		log.Println("Error initializing module:", err)
+		return
+	}
+
+	if err = runCommand(projectDir, "go", "fmt", "./..."); err != nil {
+		log.Println("Error running go format:", err)
+		return
+	}
 	return folderId, nil
+}
+
+func runCommand(dir, name string, args ...string) error {
+	cmd := exec.Command(name, args...)
+	cmd.Dir = dir // Set working directory
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
 }
 
 func (s *service) DownloadProjectByFolderID(folderID string) (err error) {
