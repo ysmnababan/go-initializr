@@ -3,6 +3,7 @@ package initializer
 import (
 	"fmt"
 	"go-initializr/app/pkg/response"
+	"net/http"
 	"os"
 	"path/filepath"
 
@@ -10,7 +11,7 @@ import (
 )
 
 type InitializerService interface {
-	InitializeBoilerplate(req *BasicConfigRequest) (folderId string, err error)
+	InitializeBoilerplate(req *BasicConfigRequest) (zipData []byte, err error)
 	DownloadProjectByFolderID(folderID string) (err error)
 }
 
@@ -36,15 +37,17 @@ func (h *handler) InitializeBoilerplate(c echo.Context) (err error) {
 		return response.ErrorWrap(response.ErrBadRequest, err).Send(c)
 	}
 
-	folderID, err := h.service.InitializeBoilerplate(req)
+	zipData, err := h.service.InitializeBoilerplate(req)
 	if err != nil {
 		return response.ErrorResponse(err).Send(c)
 	}
 
-	return response.SuccessResponse(
-		map[string]any{
-			"folder_id": folderID,
-		}).Send(c)
+	c.Response().Header().Set(echo.HeaderContentType, "application/zip")
+	dispValue := fmt.Sprintf("attachment; filename=%s.zip", req.ProjectName)
+	c.Response().Header().Set(echo.HeaderContentDisposition, dispValue)
+	c.Response().WriteHeader(http.StatusOK)
+	_, err = c.Response().Write(zipData)
+	return err
 }
 
 func (h *handler) DownloadFolder(c echo.Context) (err error) {

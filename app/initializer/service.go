@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os/exec"
 
+	"go-initializr/app/pkg"
 	"go-initializr/app/pkg/response"
 	"os"
 	"strings"
@@ -21,7 +22,7 @@ func NewService() *service {
 	return &service{}
 }
 
-func (s *service) InitializeBoilerplate(req *BasicConfigRequest) (folderId string, err error) {
+func (s *service) InitializeBoilerplate(req *BasicConfigRequest) (zipData []byte, err error) {
 	file, err := os.Open(FOLDER_STRUCTURE_PATH)
 	if err != nil {
 		err = response.ErrorWrap(response.ErrOpeningFile, err)
@@ -42,26 +43,32 @@ func (s *service) InitializeBoilerplate(req *BasicConfigRequest) (folderId strin
 	}
 
 	// create the boilerplate project
-	folderId = uuid.NewString()
-	rootName := fmt.Sprintf("%s/%s", GENERATED_ROOT_FOLDER, folderId)
+	folderId := uuid.NewString()
+	targetPath := fmt.Sprintf("%s/%s", GENERATED_ROOT_FOLDER, folderId)
 	rootNode.Name = req.ProjectName
-	err = rootNode.GenerateFolder(rootName, req)
+	err = rootNode.GenerateFolder(targetPath, req)
 	if err != nil {
 		return
 	}
 
-	projectDir := fmt.Sprintf("%s/%s", rootName, req.ProjectName)
-	fmt.Println("Initializing Go module in", projectDir)
-	if err = runCommand(projectDir, "go", "mod", "init", req.ProjectName); err != nil {
+	rootProjectPath := fmt.Sprintf("%s/%s", targetPath, req.ProjectName)
+	fmt.Println("Initializing Go module in", rootProjectPath)
+	if err = runCommand(rootProjectPath, "go", "mod", "init", req.ProjectName); err != nil {
 		log.Println("Error initializing module:", err)
 		return
 	}
 
-	if err = runCommand(projectDir, "go", "fmt", "./..."); err != nil {
+	if err = runCommand(rootProjectPath, "go", "fmt", "./..."); err != nil {
 		log.Println("Error running go format:", err)
 		return
 	}
-	return folderId, nil
+
+	zipped, err := pkg.ZipFolder(rootProjectPath)
+	if err != nil {
+		err = response.ErrorWrap(response.ErrZip, err)
+		return
+	}
+	return zipped, nil
 }
 
 func runCommand(dir, name string, args ...string) error {
