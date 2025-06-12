@@ -24,6 +24,6 @@ func main() {
 	handler := initializer.NewHandler()
 	version1.POST("/initialize", handler.InitializeBoilerplate)
 	version1.GET("/initialize/download/:id", handler.DownloadFolder)
-
+	version1.POST("/reset-folder", handler.DeleteAllGeneratedProject)
 	e.Logger.Fatal(e.Start(":1323"))
 }

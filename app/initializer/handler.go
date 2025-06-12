@@ -1,7 +1,10 @@
 package initializer
 
 import (
+	"fmt"
 	"go-initializr/app/pkg/response"
+	"os"
+	"path/filepath"
 
 	"github.com/labstack/echo/v4"
 )
@@ -45,5 +48,22 @@ func (h *handler) InitializeBoilerplate(c echo.Context) (err error) {
 }
 
 func (h *handler) DownloadFolder(c echo.Context) (err error) {
+	return nil
+}
+
+func (h *handler) DeleteAllGeneratedProject(c echo.Context) (err error) {
+	entries, err := os.ReadDir(GENERATED_ROOT_FOLDER)
+	if err != nil {
+		return fmt.Errorf("failed to read directory: %w", err)
+
+	}
+
+	for _, entry := range entries {
+		entryPath := filepath.Join(GENERATED_ROOT_FOLDER, entry.Name())
+		err := os.RemoveAll(entryPath)
+		if err != nil {
+			return fmt.Errorf("failed to remove %s: %w", entryPath, err)
+		}
+	}
 	return nil
 }
