@@ -54,10 +54,10 @@ func buildConfig() Config {
 			MaxIdleConns: PriorityInt(e.GetInt("DB_MAX_IDLE_CONNS"), 2),
 			MaxOpenConns: PriorityInt(e.GetInt("DB_MAX_OPEN_CONNS"), 0),
 			LogLevel:     PriorityString(e.GetString("DB_LOG_LEVEL"), "info"),
-			{{ if .DBPostgres }}			
+			{{ if eq .DB "postgres" }}			
 			SSLMode:      PriorityString(e.GetString("DB_SSLMODE")),
 			TimeZone:     PriorityString(e.GetString("DB_TZ"), "Asia/Jakarta"),
-			{{ else if .DBMysql}}
+			{{ else if eq .DB  "mysql"}}
 			Charset:	  PriorityString(e.GetString("DB_CHARSET")),
 			ParseTime:    PriorityString(e.GetString("DB_PARSE_TIME")),
 			Loc:          PriorityString(e.GetString("DB_LOC")),

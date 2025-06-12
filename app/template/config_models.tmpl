@@ -30,10 +30,10 @@ type DBConfig struct {
 	Password            string
 	Port                string
 	Name                string
-{{ if .DBPostgres }}
+{{ if eq .DB "postgres" }}	
 	SSLMode             string
 	TimeZone            string
-{{ else if .DBMysql}}
+{{ else if eq .DB  "mysql"}}
     Charset             string
     ParseTime           string
     Loc                 string
