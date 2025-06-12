@@ -8,7 +8,7 @@ type BasicConfigRequest struct {
 	Swagger     bool                 `json:"swagger"`
 	Redis       bool                 `json:"redis"`
 	Validator   bool                 `json:"validator"`
-	DB          common.DBType        `json:"db" validate:"db-type"`
-	FrameWork   common.FrameWorkType `json:"framework" validate:"framework"`
+	DB          common.DBType        `json:"db" validate:"required,oneof=postgres mysql sqlserver"`
+	FrameWork   common.FrameWorkType `json:"framework" validate:"required,oneof=echo gin"`
 	ModInit     bool                 `json:"mod_init"`
 }
