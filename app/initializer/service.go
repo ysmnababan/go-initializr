@@ -40,8 +40,9 @@ func (s *service) InitializeBoilerplate(req *BasicConfigRequest) (folderId strin
 	}
 
 	// create the boilerplate project
-	folderId = fmt.Sprintf("%s-%s", req.ProjectName, uuid.NewString())
+	folderId = uuid.NewString()
 	rootName := fmt.Sprintf("%s/%s", GENERATED_ROOT_FOLDER, folderId)
+	rootNode.Name = req.ProjectName
 	err = rootNode.GenerateFolder(rootName, req)
 	if err != nil {
 		return
