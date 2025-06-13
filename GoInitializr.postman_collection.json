@@ -1,0 +1,36 @@
+{
+	"info": {
+		"_postman_id": "971b579a-0308-47dc-8584-113d5071b890",
+		"name": "GoInitializr",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43188010"
+	},
+	"item": [
+		{
+			"name": "Generate Template Project",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"project_name\": \"my-project\",\r\n  \"jwt\": true,\r\n  \"swagger\": true,\r\n  \"redis\": true,\r\n  \"validator\": true,\r\n  \"db\": \"postgres\", // can be postgres, mysql\r\n  \"framework\": \"echo\" // for now it is just echo framework\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}v1/initialize",
+					"host": [
+						"{{url}}v1"
+					],
+					"path": [
+						"initialize"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

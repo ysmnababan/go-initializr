@@ -71,6 +71,7 @@ var (
 	ErrCreatingFolder      = CustomError(http.StatusInternalServerError, 50004, "Error creating folder")
 	ErrCreatingFile        = CustomError(http.StatusInternalServerError, 50005, "Error creating file")
 	ErrExecutingTemplate   = CustomError(http.StatusInternalServerError, 50006, "Error executing template")
+	ErrZip                 = CustomError(http.StatusInternalServerError, 50007, "Error creating zip file")
 )
 
 func ErrorBuilder(res *Error, message error) *Error {
