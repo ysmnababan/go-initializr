@@ -3,6 +3,7 @@ package main
 import (
 	"go-initializr/app/initializer"
 	"go-initializr/app/pkg"
+	"log"
 	"net/http"
 	"os"
 
@@ -13,7 +14,7 @@ import (
 func init() {
 	err := godotenv.Load()
 	if err != nil {
-		panic(err)
+		log.Println("No .env file found, skipping...")
 	}
 }
 
