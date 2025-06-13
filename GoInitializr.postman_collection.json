@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"project_name\": \"my-project\",\r\n  \"jwt\": true,\r\n  \"swagger\": true,\r\n  \"redis\": true,\r\n  \"validator\": true,\r\n  \"db\": \"postgres\",\r\n  \"framework\": \"echo\"\r\n}",
+					"raw": "{\r\n  \"project_name\": \"my-project\",\r\n  \"jwt\": true,\r\n  \"swagger\": true,\r\n  \"redis\": true,\r\n  \"validator\": true,\r\n  \"db\": \"postgres\", // can be postgres, mysql\r\n  \"framework\": \"echo\" // for now it is just echo framework\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
