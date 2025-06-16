@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 function App() {
-  const [projectName, setProjectName] = useState('learn-go-otel');
+  const [projectName, setProjectName] = useState('learn-go');
   const [db, setDb] = useState('postgres');
   const [framework, setFramework] = useState('echo');
   const [jwt, setJwt] = useState(false);
