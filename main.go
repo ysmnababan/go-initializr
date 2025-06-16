@@ -29,7 +29,7 @@ func main() {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 
-	version1 := e.Group("/v1")
+	version1 := e.Group("api/v1")
 	handler := initializer.NewHandler()
 	version1.POST("/initialize", handler.InitializeBoilerplate)
 	version1.GET("/initialize/download/:id", handler.DownloadFolder)
