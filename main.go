@@ -9,6 +9,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func init() {
@@ -24,10 +25,14 @@ func main() {
 	}
 	e := echo.New()
 	e.Validator = pkg.NewCustomValidator()
-
-	e.GET("/", func(c echo.Context) error {
+	e.Use(middleware.Logger())
+	e.GET("/hello-world", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
+
+	e.Static("/assets", "frontend/assets") // Serve JS & CSS
+	e.Static("/", "frontend")              // static assets
+	e.File("/*", "frontend/index.html")    // fallback for SPA routes
 
 	version1 := e.Group("api/v1")
 	handler := initializer.NewHandler()
