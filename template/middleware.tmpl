@@ -11,12 +11,12 @@ import (
 	echoMiddleware "github.com/labstack/echo/v4/middleware"
 	"github.com/rs/zerolog/log"
 
-	"{{ .ProjectName}}/config"
+	"{{ .ModuleName}}/config"
     {{ if .Redis }}
-    "{{ .ProjectName }}/internals/pkg/redisutil" {{ end }}
+    "{{ .ModuleName }}/internals/pkg/redisutil" {{ end }}
 	
     {{ if .Validator }}
-	"{{ .ProjectName }}/internals/utils/validator" {{ end }}
+	"{{ .ModuleName }}/internals/utils/validator" {{ end }}
 )
 
 {{ if .Redis }}

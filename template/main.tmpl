@@ -8,12 +8,12 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
-	"{{ .ProjectName }}/config"
-	middleware "{{ .ProjectName }}/internals/middleware"
-	httpserver "{{ .ProjectName }}/internals/server"
-	"{{ .ProjectName }}/internals/factory"
-	"{{ .ProjectName }}/internals/utils/env"
-	"{{ .ProjectName }}/internals/pkg/database"
+	"{{ .ModuleName }}/config"
+	middleware "{{ .ModuleName }}/internals/middleware"
+	httpserver "{{ .ModuleName }}/internals/server"
+	"{{ .ModuleName }}/internals/factory"
+	"{{ .ModuleName }}/internals/utils/env"
+	"{{ .ModuleName }}/internals/pkg/database"
 )
 
 func init() {
@@ -23,9 +23,9 @@ func init() {
 	log.Info().Msg("Choosen environment " + selectedEnv)
 }
 {{ if .Swagger }}
-// @title {{ .ProjectName }}-Project
+// @title {{ .ModuleName }}-Project
 // @version 0.0.1
-// @description This is a doc for {{ .ProjectName }}-Project
+// @description This is a doc for {{ .ModuleName }}-Project
 
 // @securityDefinitions.apikey Authorization
 // @in header
