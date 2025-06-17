@@ -46,7 +46,7 @@ func (n *Node) GenerateFile(root string, config *BasicConfigRequest) (err error)
 	if err != nil {
 		return response.ErrorWrap(response.ErrCreatingFile, err)
 	}
-	fmt.Println(config.ProjectName)
+	
 	err = tmpl.Execute(file, config)
 	if err != nil {
 		log.Println(err)
