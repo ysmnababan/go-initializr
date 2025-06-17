@@ -34,4 +34,5 @@ var TEMPLATE_REGISTRY = map[string]string{
 	"validator.go":        "validator.tmpl",
 	"custom_validator.go": "custom_validator.tmpl",
 	"jwt.go":              "token.tmpl",
+	"go.mod":              "gomod.tmpl",
 }

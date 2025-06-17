@@ -59,11 +59,11 @@ func (s *service) InitializeBoilerplate(req *BasicConfigRequest) (zipData []byte
 	}
 
 	rootProjectPath := fmt.Sprintf("%s/%s", targetPath, req.ProjectName)
-	fmt.Println("Initializing Go module in", rootProjectPath)
-	if err = runCommand(rootProjectPath, "go", "mod", "init", req.ProjectName); err != nil {
-		log.Println("Error initializing module:", err)
-		return
-	}
+	// fmt.Println("Initializing Go module in", rootProjectPath)
+	// if err = runCommand(rootProjectPath, "go", "mod", "init", req.ProjectName); err != nil {
+	// 	log.Println("Error initializing module:", err)
+	// 	return
+	// }
 
 	if err = runCommand(rootProjectPath, "go", "fmt", "./..."); err != nil {
 		log.Println("Error running go format:", err)

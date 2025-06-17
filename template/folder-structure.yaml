@@ -49,4 +49,5 @@ root/
   .env
   .gitignore
   README.md
-  main.go                       
+  main.go
+  go.mod
