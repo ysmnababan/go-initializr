@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 function App() {
   const [projectName, setProjectName] = useState('learn-go');
+  const [moduleName, setModuleName] = useState('learn-go');
   const [db, setDb] = useState('postgres');
   const [framework, setFramework] = useState('echo');
   const [jwt, setJwt] = useState(false);
@@ -15,6 +16,7 @@ function App() {
     setLoading(true);
 
     const payload = {
+      module_name: moduleName,
       project_name: projectName,
       db,
       framework,
@@ -55,6 +57,11 @@ function App() {
         <div>
           <label>Project Name: </label>
           <input value={projectName} onChange={e => setProjectName(e.target.value)} />
+        </div>
+        
+        <div>
+          <label>Module Name: </label>
+          <input value={moduleName} onChange={e => setModuleName(e.target.value)} />
         </div>
 
         <div>
