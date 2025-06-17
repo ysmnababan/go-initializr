@@ -26,38 +26,11 @@ You can run this project in **two ways**:
    docker run -d -e PORT=1323 -p 1323:1323 go-initializr
    ```
 
-2. **Hit the API**
+2. **Access the web**
 
-   You can test the API in either of the following ways:
+   You can try the GoInitializr in your browser 
 
-   - **Using Postman**
-
-     - Import the provided Postman collection found in this repository.
-     - Run the request named **"Generate TemplateProject"**.
-     - Update the `{{url}}` variable to `http://localhost:1323/` (default).
-     - Click the **Send** button, then use **Download** to retrieve the generated project.
-
-   - **Using Any API Tool with Download Support**
-
-     Send a `POST` request to:
-
-     ```
-     http://localhost:1323/v1/initialize
-     ```
-
-     #### 📦 Payload Example
-
-     ```json
-     {
-       "project_name": "my-project",
-       "jwt": true,
-       "swagger": true,
-       "redis": true,
-       "validator": true,
-       "db": "postgres", // options: postgres, mysql
-       "framework": "echo" // currently only 'echo' is supported
-     }
-     ```
+   `http://localhost:1323/`
 
 ---
 
