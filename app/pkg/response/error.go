@@ -25,11 +25,9 @@ type Error struct {
 
 var (
 	// BadRequest
-	ErrBadRequest                       = CustomError(http.StatusBadRequest, 40001, "Bad Request")
-	ErrValidation                       = CustomError(http.StatusBadRequest, 40002, "Invalid parameters or payload")
-	ErrValueMismatch                    = CustomError(http.StatusBadRequest, 40003, "Requested value mismatch")
-	ErrForgotPasswordResendTokenInvalid = CustomError(http.StatusBadRequest, 40005, "Invalid forgot password resend token")
-	ErrInvalidUpdateStatus              = CustomError(http.StatusBadRequest, 40006, "Invalid status update")
+	ErrBadRequest       = CustomError(http.StatusBadRequest, 40001, "Bad Request")
+	ErrInputLength      = CustomError(http.StatusBadRequest, 40002, "Max Length Exceeded")
+	ErrInvalidCharacter = CustomError(http.StatusBadRequest, 40003, "Invalid Characters")
 
 	// Unauthorized
 	ErrUnauthorized           = CustomError(http.StatusUnauthorized, 40101, "Unauthorized, please login")
