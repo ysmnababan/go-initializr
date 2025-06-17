@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"go-initializr/app/pkg"
 	"go-initializr/app/pkg/response"
-	"text/template"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
+	"text/template"
 )
 
 type Node struct {
@@ -39,6 +39,9 @@ func (n *Node) GenerateFile(root string, config *BasicConfigRequest) (err error)
 	if strings.Contains(tmplFilename, "validator") && !config.Validator {
 		return
 	}
+	if strings.Contains(tmplFilename, "token") && !config.JWT {
+		return
+	}
 	tmplPath := filepath.Join(TEMPLATE_FOLDER_PATH, tmplFilename) // Assuming templates are in a "templates" directory
 	tmpl := template.Must(template.New(tmplFilename).ParseFiles(tmplPath))
 	filename := filepath.Join(root, n.Name)
@@ -46,7 +49,7 @@ func (n *Node) GenerateFile(root string, config *BasicConfigRequest) (err error)
 	if err != nil {
 		return response.ErrorWrap(response.ErrCreatingFile, err)
 	}
-	fmt.Println(config.ProjectName)
+
 	err = tmpl.Execute(file, config)
 	if err != nil {
 		log.Println(err)

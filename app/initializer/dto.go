@@ -4,6 +4,7 @@ import "go-initializr/app/common"
 
 type BasicConfigRequest struct {
 	ProjectName string               `json:"project_name" validate:"required"`
+	ModuleName  string               `json:"module_name" validate:"required"`
 	JWT         bool                 `json:"jwt"`
 	Swagger     bool                 `json:"swagger"`
 	Redis       bool                 `json:"redis"`
