@@ -38,11 +38,13 @@ func (s *service) InitializeBoilerplate(req *BasicConfigRequest) (zipData []byte
 	req.ProjectName = sanitizeProjectName(req.ProjectName)
 
 	moduleName := sanitizeModuleName(req.ModuleName)
+	log.Println("project,module:", req.ProjectName, moduleName)
 	err = validateModuleName(moduleName)
 	if err != nil {
 		err = response.ErrorWrap(response.ErrInvalidCharacter, err)
 		return
 	}
+	req.ModuleName = moduleName
 	file, err := os.Open(FOLDER_STRUCTURE_PATH)
 	if err != nil {
 		err = response.ErrorWrap(response.ErrOpeningFile, err)

@@ -1,12 +1,14 @@
 package example_feat
 
 import (
+	{{ if .JWT }}
 	"{{ .ModuleName }}/internals/middleware"
+	{{end}}
 	"github.com/labstack/echo/v4"
 )
 
 func (h *handler) Route(g *echo.Group) {
-	g.GET("", h.GetUsers, middleware.Authentication)
+	g.GET("", h.GetUsers {{if .JWT }}, middleware.Authentication{{end}})
 	g.POST("", h.CreateUser)
 	g.POST("/auth", h.Login)
 }

@@ -3,7 +3,9 @@ package example_feat
 import (
     "{{ .ModuleName }}/internals/factory"
     "{{ .ModuleName }}/internals/utils/response"
+	{{if .JWT}}
     "{{ .ModuleName }}/internals/utils/token"
+	{{end}}
 	"errors"
 
     "github.com/labstack/echo/v4"
@@ -75,11 +77,15 @@ func (s *userService) Login(ctx echo.Context, req *UserLoginRequest) (out *UserL
 	}
 	
 	// generate jwt token
+	{{if .JWT}}
 	stringToken, err := token.GenerateJWT(user.UserID, user.Email)
 	if err != nil {
 		err = response.ErrorWrap(response.ErrInternalServerError, err)
 		return 
 	}
+	{{ else }}
+	stringToken:= "some-token"
+	{{end}}
 	out = &UserLoginResponse{
 		TokenString: stringToken,
 	}
