@@ -6,10 +6,12 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"golang.org/x/time/rate"
 )
 
 func init() {
@@ -24,6 +26,30 @@ func main() {
 		panic(err)
 	}
 	e := echo.New()
+	config := middleware.RateLimiterConfig{
+		Skipper: middleware.DefaultSkipper,
+		Store: middleware.NewRateLimiterMemoryStoreWithConfig(
+			middleware.RateLimiterMemoryStoreConfig{
+				Rate:      rate.Every(time.Minute / 10),
+				Burst:     10,
+				ExpiresIn: 3 * time.Minute},
+		),
+		IdentifierExtractor: func(ctx echo.Context) (string, error) {
+			id := ctx.RealIP()
+			return id, nil
+		},
+		ErrorHandler: func(context echo.Context, err error) error {
+			return context.JSON(http.StatusForbidden, nil)
+		},
+		DenyHandler: func(context echo.Context, identifier string, err error) error {
+			log.Print("too many request ")
+			return context.JSON(http.StatusTooManyRequests, map[string]any{
+				"message": "too many request",
+			})
+		},
+	}
+
+	e.Use(middleware.RateLimiterWithConfig(config))
 	e.Validator = pkg.NewCustomValidator()
 	e.Use(middleware.Logger())
 	e.GET("/hello-world", func(c echo.Context) error {
