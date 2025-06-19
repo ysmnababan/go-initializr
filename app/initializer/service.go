@@ -115,7 +115,7 @@ func sanitizeModuleName(input string) string {
 
 	// Remove invalid characters
 	reg := regexp.MustCompile(`[^a-z0-9\-\/\.]+`)
-	name = reg.ReplaceAllString(name, "")
+	name = reg.ReplaceAllString(name, "-")
 
 	// Normalize multiple dashes/slashes
 	name = regexp.MustCompile(`[-]+`).ReplaceAllString(name, "-")
@@ -156,7 +156,7 @@ func sanitizeProjectName(input string) string {
 
 	// Remove dangerous characters
 	reg := regexp.MustCompile(`[^a-z0-9\-_]+`)
-	name = reg.ReplaceAllString(name, "")
+	name = reg.ReplaceAllString(name, "-")
 
 	// Normalize multiple dashes/underscores
 	name = regexp.MustCompile(`[-_]+`).ReplaceAllString(name, "-")
