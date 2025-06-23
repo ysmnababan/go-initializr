@@ -58,7 +58,17 @@ func main() {
 
 	e.Static("/assets", "frontend/assets") // Serve JS & CSS
 	e.Static("/", "frontend")              // static assets
-	e.File("/*", "frontend/index.html")    // fallback for SPA routes
+	e.GET("/*", func(c echo.Context) error {
+		path := "frontend" + c.Request().URL.Path
+
+		// Try to serve the file if it exists
+		if _, err := os.Stat(path); err == nil {
+			return c.File(path)
+		}
+
+		// Otherwise fallback to index.html for SPA
+		return c.File("frontend/index.html")
+	})
 
 	version1 := e.Group("api/v1")
 	handler := initializer.NewHandler()
