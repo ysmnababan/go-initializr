@@ -4,6 +4,7 @@ const TEMPLATE_FOLDER_PATH string = "template"
 const FOLDER_STRUCTURE_PATH string = "template/folder-structure.yaml"
 const GENERATED_ROOT_FOLDER = "generated"
 const PROJECT_ROOT_FOLDER = "root"
+const MAX_NAME_LENGTH = 64
 
 var TEMPLATE_REGISTRY = map[string]string{
 	".env":                "env.tmpl",
@@ -34,4 +35,5 @@ var TEMPLATE_REGISTRY = map[string]string{
 	"validator.go":        "validator.tmpl",
 	"custom_validator.go": "custom_validator.tmpl",
 	"jwt.go":              "token.tmpl",
+	"go.mod":              "gomod.tmpl",
 }

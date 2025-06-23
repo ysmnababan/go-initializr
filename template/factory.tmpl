@@ -4,9 +4,9 @@ import (
 
 	"gorm.io/gorm"
 
-	"{{ .ProjectName }}/internals/pkg/database"
+	"{{ .ModuleName }}/internals/pkg/database"
     {{ if .Redis }}
-	"{{ .ProjectName }}/internals/pkg/redisutil" {{ end }}
+	"{{ .ModuleName }}/internals/pkg/redisutil" {{ end }}
 )
 
 type Factory struct {

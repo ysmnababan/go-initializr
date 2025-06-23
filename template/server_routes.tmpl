@@ -7,10 +7,10 @@ import (
 	"github.com/labstack/echo/v4"
     {{ if .Swagger }}
 	echoSwagger "github.com/swaggo/echo-swagger"
-	"{{ .ProjectName }}/docs"{{ end }}
-    "{{ .ProjectName }}/config"
-    "{{ .ProjectName }}/internals/factory"
-    "{{ .ProjectName }}/internals/app/example_feat"
+	"{{ .ModuleName }}/docs"{{ end }}
+    "{{ .ModuleName }}/config"
+    "{{ .ModuleName }}/internals/factory"
+    "{{ .ModuleName }}/internals/app/example_feat"
 
 )
 
