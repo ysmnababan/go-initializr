@@ -126,7 +126,7 @@ func (n *Node) ParseLine(line string) {
 
 func (parent *Node) insertNode(currentNode *Node) {
 	if currentNode.isRoot() {
-		parent.IsFolder = true
+		parent.IsFolder = currentNode.IsFolder
 		parent.Content = nil
 		parent.Level = 0
 		parent.Name = currentNode.Name
