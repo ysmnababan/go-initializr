@@ -1,7 +1,7 @@
 import './index.css'; 
 import { useState, useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
-
+import { Sun, Moon, Github  } from 'lucide-react';;
 function App() {
   const [projectName, setProjectName] = useState('learn-go');
   const [moduleName, setModuleName] = useState('learn-go');
@@ -91,12 +91,29 @@ function App() {
             Go Initializr
           </h1>
         </div>
-        <div className="absolute top-0 right-0">
+        <div className="absolute top-0 right-0 flex items-center gap-2">
+          {/* GitHub Icon Link */}
+          <a
+            href="https://github.com/ysmnababan/go-initializr"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-gray-300 dark:bg-gray-700 p-2 rounded hover:opacity-80"
+            title="View on GitHub"
+          >
+            <Github size={20} className="text-black dark:text-white" />
+          </a>
+
+          {/* Dark Mode Toggle */}
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className="bg-gray-300 dark:bg-gray-700 text-sm px-4 py-1 rounded"
+            className="bg-gray-300 dark:bg-gray-700 p-2 rounded"
+            title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >
-            {darkMode ? 'Light Mode' : 'Dark Mode'}
+            {darkMode ? (
+              <Sun size={20} className="text-black dark:text-white" />
+            ) : (
+              <Moon size={20} className="text-black dark:text-white" />
+            )}
           </button>
         </div>
       </div>
