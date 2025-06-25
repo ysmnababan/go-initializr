@@ -2,6 +2,7 @@ package env
 
 import (
 	"os"
+    "path/filepath"
 	"strconv"
 
 	"github.com/joho/godotenv"
@@ -23,8 +24,7 @@ func NewEnv() *env {
 
 func (e *env) Load(env string) {
 	cwd, _ := os.Getwd()
-
-	err := godotenv.Load(string(cwd) + "\\" + env)
+	err := godotenv.Load(filepath.Join(cwd, env))
 	if err != nil {
 		log.Error().Err(err).Str("cwd", cwd).Msg("Load .env file error")
 	}
