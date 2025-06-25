@@ -36,4 +36,6 @@ var TEMPLATE_REGISTRY = map[string]string{
 	"custom_validator.go": "custom_validator.tmpl",
 	"jwt.go":              "token.tmpl",
 	"go.mod":              "gomod.tmpl",
+	"Dockerfile":          "dockerfile.tmpl",
+	"docker-compose.yaml": "dockercompose.tmpl",
 }
