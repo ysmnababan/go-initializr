@@ -26,9 +26,6 @@ var (
 	// BadRequest
 	ErrBadRequest                       = CustomError(http.StatusBadRequest, 40001, "Bad Request")
 	ErrValidation                       = CustomError(http.StatusBadRequest, 40002, "Invalid parameters or payload")
-	ErrForgotPasswordResendTokenInvalid = CustomError(http.StatusBadRequest, 40005, "Invalid forgot password resend token")
-	ErrInvalidUpdateStatus              = CustomError(http.StatusBadRequest, 40006, "Invalid status update")
-	ErrInvalidOldPassword               = CustomError(http.StatusBadRequest, 40007, "Kata Sandi Lama tidak sesuai")
 
 	// Unauthorized
 	ErrUnauthorized           = CustomError(http.StatusUnauthorized, 40101, "Unauthorized, please login")
@@ -40,14 +37,9 @@ var (
 
 	// Forbidden
 	ErrForbidden              = CustomError(http.StatusForbidden, 40301, "Forbidden")
-	ErrAccountNotInWhitelist  = CustomError(http.StatusForbidden, 40302, "User not in whitelist")
-	ErrForbiddenRoom          = CustomError(http.StatusForbidden, 40303, "You are not authorized to access this room.")
-	ErrForbiddenApiPermission = CustomError(http.StatusForbidden, 40304, "Anda tidak memiliki akses resource ini")
 
 	// NotFound
 	ErrNotFound             = CustomError(http.StatusNotFound, 40401, "Data not found")
-	ErrRouteNotFound        = CustomError(http.StatusNotFound, 40402, "Route not found")
-	ErrAccountNotRegistered = CustomError(http.StatusNotFound, 40403, "This account is not registered. Kindly contact your administrator for assistance")
 
 	// Conflict
 	ErrDuplicate         = CustomError(http.StatusConflict, 40901, "Created value already exists")
@@ -55,12 +47,8 @@ var (
 
 	// UnprocessableEntity
 	ErrUnprocessableEntity = CustomError(http.StatusUnprocessableEntity, 42201, "Invalid parameters or payload")
-	ErrInvalidPrice        = CustomError(http.StatusUnprocessableEntity, 42202, "Oops! The value entered is not a multiple of 1000. Please correct it.")
 	ErrInvalidOTP          = CustomError(http.StatusUnprocessableEntity, 42205, "Invalid OTP")
 	ErrInvalidToken        = CustomError(http.StatusUnprocessableEntity, 42206, "Invalid Token")
-
-	// Too Many Request
-	ErrForgotPasswordMaxAttempt = CustomError(http.StatusTooManyRequests, 40004, "You have reached the maximum request limit for today")
 
 	// InternalServerError
 	ErrInternalServerError = CustomError(http.StatusInternalServerError, 50001, "Something bad happened")
