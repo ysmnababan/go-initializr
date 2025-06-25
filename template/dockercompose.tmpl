@@ -13,6 +13,29 @@ services:
       - POSTGRES_DB=mydatabase
     networks:
       - backend
+{{ else if eq .DB "mysql"}}
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: dbname
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: user
+      # You can use whatever password you like
+      MYSQL_PASSWORD: pass
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: pass
+    ports:
+      # <Port exposed> : <MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - backend
 {{end}}
   backend:
     build:
