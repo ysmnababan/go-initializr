@@ -46,6 +46,7 @@ root/
   migrations/
   test/
   Dockerfile
+  docker-compose.yaml
   .env
   .gitignore
   README.md
