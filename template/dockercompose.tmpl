@@ -1,0 +1,32 @@
+services:
+{{ if eq .DB "postgres"}}
+  db:
+    image: postgres:latest
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=mydatabase
+    networks:
+      - backend
+{{end}}
+  backend:
+    build:
+      context: .
+    container_name: backend
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "1323:1323"
+    networks:
+      - backend
+volumes:
+  db-data:
+
+networks:
+  backend:
