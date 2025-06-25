@@ -70,7 +70,7 @@ func (h *handler) CreateUser(c echo.Context) error {
 		return response.ErrorResponse(err).Send(c)
 	}
 
-	return response.SuccessResponse("mantap").Send(c)
+	return response.SuccessResponse("success").Send(c)
 }
 
 {{ if .Swagger}}
