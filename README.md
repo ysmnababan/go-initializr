@@ -34,10 +34,10 @@ You can run this project in **two ways**:
 
 ---
 
-### 2. 🌐 Using Deployment Link *(Coming Soon)*
+### 2. 🌐 Using Deployment Link
 
 This option will allow you to generate projects from a hosted web service.
 
-_Stay tuned!_
+`https://go-initializr-production-44ac.up.railway.app/`
 
 ---
