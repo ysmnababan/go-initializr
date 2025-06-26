@@ -11,8 +11,11 @@ import (
 
 	"github.com/rs/zerolog"
 	zlog "github.com/rs/zerolog/log"
-
+	{{ if eq .DB "postgres"}}
 	"gorm.io/driver/postgres"
+	{{ else if eq .DB "mysql"}}
+	"gorm.io/driver/mysql"
+	{{ end }}
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
@@ -70,15 +73,25 @@ func Connection() *gorm.DB {
 }
 
 // DSN ...
+{{ if eq .DB "postgres"}}
 func (c Config) DSN() string {
 	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s",
 		c.Host, c.Username, c.Password, c.Name, c.Port, c.SSLMode, c.TimeZone)
 }
+{{ else if eq .DB "mysql"}}
+func (c Config) DSN() string {
+	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=%s&loc=%s",
+		c.Username, c.Password, c.Host, c.Port, c.Name, c.Charset, c.ParseTime, c.Loc)
+}
+{{ end }}
 
 // Open ...
 func (c Config) Open(logmode string) (*gorm.DB, error) {
+{{ if eq .DB "postgres"}}
 	dialector := postgres.Open(c.DSN())
-
+{{ else if eq .DB "mysql"}}
+	dialector := mysql.Open(c.DSN())
+{{ end }}
 	db, err := gorm.Open(dialector, &gorm.Config{
 		Logger:                 dblogger[logmode],
 		SkipDefaultTransaction: true,
