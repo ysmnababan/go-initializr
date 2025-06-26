@@ -56,18 +56,11 @@ func main() {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 
-	e.Static("/assets", "frontend/assets") // Serve JS & CSS
-	e.Static("/", "frontend")              // static assets
+	e.Static("/assets", "frontend/dist/assets") // Serve JS & CSS
+	e.Static("/", "frontend/dist")              // static assets
+	e.File("/go-initializr-icon.svg", "frontend/dist/go-initializr-icon.svg")
 	e.GET("/*", func(c echo.Context) error {
-		path := "frontend" + c.Request().URL.Path
-
-		// Try to serve the file if it exists
-		if _, err := os.Stat(path); err == nil {
-			return c.File(path)
-		}
-
-		// Otherwise fallback to index.html for SPA
-		return c.File("frontend/index.html")
+		return c.File("frontend/dist/index.html")
 	})
 
 	version1 := e.Group("api/v1")

@@ -43,7 +43,7 @@ COPY --from=builder /app/main .
 COPY --from=builder /app/template ./template
 
 # Copy React build output
-COPY --from=frontend-builder /frontend/dist ./frontend
+COPY --from=frontend-builder /frontend/dist ./frontend/dist
 
 # Document the port (for clarity and tooling)
 EXPOSE 1323
