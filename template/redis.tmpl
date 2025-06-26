@@ -1,11 +1,13 @@
 package redisutil
 
 import (
+	"log"
 	"time"
 
-	"github.com/gomodule/redigo/redis"
-
 	"{{ .ModuleName }}/config"
+
+	"github.com/gomodule/redigo/redis"
+	zlog "github.com/rs/zerolog/log"
 )
 
 type Redis struct {
@@ -27,7 +29,10 @@ func NewRedis() *Redis {
 				return nil
 			}
 			_, err := c.Do("PING")
-			return err
+			if err != nil {
+				return err
+			}
+			return nil
 		},
 		MaxIdle:         cfg.MaxIdle,
 		MaxActive:       cfg.MaxActive,
@@ -35,7 +40,14 @@ func NewRedis() *Redis {
 		Wait:            true,
 		MaxConnLifetime: time.Duration(cfg.MaxConnLifeTime) * time.Second,
 	}
+	conn := pool.Get()
+	defer conn.Close()
 
+	_, err := conn.Do("PING")
+	if err != nil {
+		log.Fatal(err)
+	}
+	zlog.Info().Msg("successfully ping the redis")
 	return &Redis{client: pool}
 }
 

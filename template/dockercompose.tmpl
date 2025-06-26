@@ -1,4 +1,15 @@
 services:
+{{ if .Redis }}
+  redis:
+    image: redis:latest
+    command: redis-server --requirepass password
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=password
+    networks:
+      - backend
+{{ end }}
 {{ if eq .DB "postgres"}}
   db:
     image: postgres:latest
@@ -43,7 +54,8 @@ services:
     container_name: backend
     restart: always
     depends_on:
-      - db
+      - db {{ if .Redis }}
+      - redis {{end}}
     ports:
       - "1323:1323"
     networks:
