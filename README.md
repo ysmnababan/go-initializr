@@ -38,6 +38,6 @@ You can run this project in **two ways**:
 
 This option will allow you to generate projects from a hosted web service.
 
-`https://go-initializr-production-44ac.up.railway.app/`
+[GoInitializr](https://go-initializr-production-44ac.up.railway.app/)
 
 ---
