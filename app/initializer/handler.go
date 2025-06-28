@@ -29,17 +29,17 @@ func (h *handler) InitializeBoilerplate(c echo.Context) (err error) {
 	req := new(BasicConfigRequest)
 	err = c.Bind(req)
 	if err != nil {
-		return response.ErrorWrap(response.ErrUnprocessableEntity, err).Send(c)
+		response.Wrap(response.ErrUnprocessableEntity, fmt.Errorf("error binding: %w", err))
 	}
 
 	err = c.Validate(req)
 	if err != nil {
-		return response.ErrorWrap(response.ErrBadRequest, err).Send(c)
+		return response.Wrap(response.ErrBadRequest, fmt.Errorf("error validation: %w", err))
 	}
 
 	zipData, err := h.service.InitializeBoilerplate(req)
 	if err != nil {
-		return response.ErrorResponse(err).Send(c)
+		return err
 	}
 
 	c.Response().Header().Set(echo.HeaderContentType, "application/zip")

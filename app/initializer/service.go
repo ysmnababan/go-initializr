@@ -28,11 +28,11 @@ func NewService() *service {
 
 func (s *service) InitializeBoilerplate(req *BasicConfigRequest) (zipData []byte, err error) {
 	if len(req.ProjectName) > MAX_NAME_LENGTH || len(req.ModuleName) > MAX_NAME_LENGTH {
-		err = response.ErrorWrap(response.ErrInputLength, errors.New("length exceeded 64 characters"))
+		err = response.Wrap(response.ErrInputLength, errors.New("length exceeded 64 characters"))
 		return
 	}
 	if err := validateProjectName(req.ProjectName); err != nil {
-		err = response.ErrorWrap(response.ErrInvalidCharacter, err)
+		err = response.Wrap(response.ErrInvalidCharacter, err)
 		return []byte{}, err
 	}
 	req.ProjectName = sanitizeProjectName(req.ProjectName)
@@ -41,13 +41,14 @@ func (s *service) InitializeBoilerplate(req *BasicConfigRequest) (zipData []byte
 	log.Println("project,module:", req.ProjectName, moduleName)
 	err = validateModuleName(moduleName)
 	if err != nil {
-		err = response.ErrorWrap(response.ErrInvalidCharacter, err)
+		err = response.Wrap(response.ErrInvalidCharacter, err)
 		return
 	}
 	req.ModuleName = moduleName
 	file, err := os.Open(FOLDER_STRUCTURE_PATH)
 	if err != nil {
-		err = response.ErrorWrap(response.ErrOpeningFile, err)
+		err = response.Wrap(response.ErrInternalServerError,
+			fmt.Errorf("error while opening file {%v}: %w", FOLDER_STRUCTURE_PATH, err))
 		return
 	}
 
@@ -60,7 +61,8 @@ func (s *service) InitializeBoilerplate(req *BasicConfigRequest) (zipData []byte
 		rootNode.ParseLine(line)
 	}
 	if err = scanner.Err(); err != nil {
-		err = response.ErrorWrap(response.ErrScanner, err)
+		err = response.Wrap(response.ErrInternalServerError,
+			fmt.Errorf("error scanner.scan: %w", err))
 		return
 	}
 
@@ -83,13 +85,14 @@ func (s *service) InitializeBoilerplate(req *BasicConfigRequest) (zipData []byte
 	rootProjectPath := fmt.Sprintf("%s/%s", targetPath, req.ProjectName)
 
 	if err = runCommand(rootProjectPath, "go", "fmt", "./..."); err != nil {
-		log.Println("Error running go format:", err)
+		err = response.Wrap(response.ErrInternalServerError, fmt.Errorf("Error running go format: %w", err))
 		return
 	}
 
 	zipped, err := pkg.ZipFolder(rootProjectPath)
 	if err != nil {
-		err = response.ErrorWrap(response.ErrZip, err)
+		err = response.Wrap(response.ErrInternalServerError,
+			fmt.Errorf("error zipping folder %s: %w", rootProjectPath, err))
 		return
 	}
 	return zipped, nil

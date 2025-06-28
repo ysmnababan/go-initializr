@@ -3,7 +3,6 @@ package initializer
 import (
 	"fmt"
 	"go-initializr/app/pkg"
-	"go-initializr/app/pkg/response"
 	"log"
 	"os"
 	"path/filepath"
@@ -47,13 +46,12 @@ func (n *Node) GenerateFile(root string, config *BasicConfigRequest) (err error)
 	filename := filepath.Join(root, n.Name)
 	file, err := os.Create(filename)
 	if err != nil {
-		return response.ErrorWrap(response.ErrCreatingFile, err)
+		return fmt.Errorf("error when creating file: %w", err)
 	}
 
 	err = tmpl.Execute(file, config)
 	if err != nil {
-		log.Println(err)
-		return response.ErrorWrap(response.ErrExecutingTemplate, err)
+		return fmt.Errorf("error when executing template: %w", err)
 	}
 	return nil
 }
@@ -63,7 +61,7 @@ func (n *Node) GenerateFolder(root string, config *BasicConfigRequest) error {
 		currentPath := filepath.Join(root, n.Name)
 		err := os.MkdirAll(currentPath, os.ModePerm)
 		if err != nil {
-			return response.ErrorWrap(response.ErrCreatingFolder, err)
+			return fmt.Errorf("error when creating folder: %w", err)
 		}
 		if len(n.Content) > 0 {
 			for _, child := range n.Content {
