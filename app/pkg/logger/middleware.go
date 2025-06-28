@@ -8,7 +8,7 @@ import (
 func WithRequestLogger() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			logger := log.With().
+			logger := log.Logger.With().
 				Str("method", c.Request().Method).
 				Str("path", c.Path()).
 				Logger()
