@@ -26,10 +26,11 @@ func init() {
 		log.Println("No .env file found, skipping...")
 	}
 	APP_ENV = "DEVELOPMENT"
-	env := os.Getenv("APP_ENV")
+	env := os.Getenv("ENV")
 	if len(env) > 0 {
 		APP_ENV = env
 	}
+	log.Println("ENV:", APP_ENV)
 }
 
 func main() {
@@ -66,6 +67,7 @@ func main() {
 		e.Use(middleware.Logger())
 	}
 	logger.InitLogger()
+	e.Use(logger.WithRequestLogger())
 	e.HTTPErrorHandler = customHttpHandler
 	e.GET("/hello-world", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
@@ -98,7 +100,7 @@ func customHttpHandler(err error, c echo.Context) {
 			Int("status_code", apiErr.Code).
 			Msg(apiErr.Message)
 
-		_ = c.JSON(apiErr.StatusCode, response.APIResponse{
+		_ = c.JSON(apiErr.Code, response.APIResponse{
 			Meta: response.Meta{
 				Success:    false,
 				Message:    apiErr.Message,
