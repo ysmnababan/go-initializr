@@ -1,8 +1,11 @@
 package main
 
 import (
+	"errors"
 	"go-initializr/app/initializer"
 	"go-initializr/app/pkg"
+	"go-initializr/app/pkg/logger"
+	"go-initializr/app/pkg/response"
 	"log"
 	"net/http"
 	"os"
@@ -11,13 +14,21 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	zlog "github.com/rs/zerolog/log"
 	"golang.org/x/time/rate"
 )
+
+var APP_ENV string
 
 func init() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("No .env file found, skipping...")
+	}
+	APP_ENV = "DEVELOPMENT"
+	env := os.Getenv("APP_ENV")
+	if len(env) > 0 {
+		APP_ENV = env
 	}
 }
 
@@ -51,7 +62,11 @@ func main() {
 
 	e.Use(middleware.RateLimiterWithConfig(config))
 	e.Validator = pkg.NewCustomValidator()
-	e.Use(middleware.Logger())
+	if APP_ENV == "DEVELOPMENT" {
+		e.Use(middleware.Logger())
+	}
+	logger.InitLogger()
+	e.HTTPErrorHandler = customHttpHandler
 	e.GET("/hello-world", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
@@ -70,4 +85,40 @@ func main() {
 	version1.POST("/reset-folder", handler.DeleteAllGeneratedProject)
 	port := os.Getenv("PORT")
 	e.Logger.Fatal(e.Start(":" + port))
+}
+
+func customHttpHandler(err error, c echo.Context) {
+	ctx := c.Request().Context()
+	logger := zlog.Ctx(ctx)
+
+	var apiErr *response.APIError
+	if errors.As(err, &apiErr) {
+		logger.Error().
+			Err(err).
+			Int("status_code", apiErr.Code).
+			Msg(apiErr.Message)
+
+		_ = c.JSON(apiErr.StatusCode, response.APIResponse{
+			Meta: response.Meta{
+				Success:    false,
+				Message:    apiErr.Message,
+				StatusCode: apiErr.StatusCode,
+				Detail:     apiErr.Detail,
+			},
+		})
+		return
+	}
+
+	logger.Error().
+		Err(err).
+		Str("path", c.Path()).
+		Msg("unhandled internal error")
+	_ = c.JSON(http.StatusInternalServerError,
+		response.APIResponse{
+			Meta: response.Meta{
+				Success:    false,
+				Message:    response.ErrInternalServerError.Message,
+				StatusCode: response.ErrInternalServerError.StatusCode,
+			},
+		})
 }
