@@ -30,13 +30,15 @@ root/
         database.go
       redisutil/
         redis.go
+      logger/
+        log_middleware.go
+        setup.go
     utils/
       env/
         env.go
       response/
         error_handler.go
         response_model.go
-        success_handler.go
       token/
         jwt.go
       validator/
