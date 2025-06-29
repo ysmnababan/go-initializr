@@ -14,12 +14,14 @@ import (
 	"{{ .ModuleName }}/internals/factory"
 	"{{ .ModuleName }}/internals/utils/env"
 	"{{ .ModuleName }}/internals/pkg/database"
+	"{{ .ModuleName }}/internals/pkg/logger"
 )
 
 func init() {
 	selectedEnv := config.Env()
 	env := env.NewEnv()
 	env.Load(`.env`)
+	logger.InitLogger()
 	log.Info().Msg("Choosen environment " + selectedEnv)
 }
 {{ if .Swagger }}

@@ -16,13 +16,13 @@ func Authentication(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		authToken := c.Request().Header.Get("Authorization")
 		if authToken == "" {
-			return res.ErrorWrap(res.ErrUnauthorized, fmt.Errorf("invalid token")).Send(c)
+			return res.Wrap(res.ErrUnauthorized, fmt.Errorf("invalid token"))
 		}
 
 		splitToken := strings.Split(authToken, "Bearer ")
 
 		if len(splitToken) < 2 {
-			return res.ErrorMessageFrom(res.ErrUnauthorized, fmt.Errorf("invalid token")).Send(c)
+			return res.Wrap(res.ErrUnauthorized, fmt.Errorf("invalid token"))
 		}
 
 		token, err := jwt.Parse(splitToken[1], func(token *jwt.Token) (interface{}, error) {
@@ -34,13 +34,13 @@ func Authentication(next echo.HandlerFunc) echo.HandlerFunc {
 		})
 		if err != nil {
 			if strings.Contains(err.Error(), "Token is expired") {
-				return res.ErrorWrap(res.ErrExpiredAccessToken, err).Send(c)
+				return res.Wrap(res.ErrExpiredAccessToken, err)
 			}
-			return res.ErrorWrap(res.ErrUnauthorized, err).Send(c)
+			return res.Wrap(res.ErrUnauthorized, err)
 		}
 
 		if !token.Valid {
-			return res.ErrorWrap(res.ErrUnauthorized, err).Send(c)
+			return res.Wrap(res.ErrUnauthorized, err)
 		}
 
 		var user_id string
