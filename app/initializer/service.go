@@ -85,7 +85,7 @@ func (s *service) InitializeBoilerplate(req *BasicConfigRequest) (zipData []byte
 	rootProjectPath := fmt.Sprintf("%s/%s", targetPath, req.ProjectName)
 
 	if err = runCommand(rootProjectPath, "go", "fmt", "./..."); err != nil {
-		err = response.Wrap(response.ErrInternalServerError, fmt.Errorf("Error running go format: %w", err))
+		err = response.Wrap(response.ErrInternalServerError, fmt.Errorf("error running go format: %w", err))
 		return
 	}
 
