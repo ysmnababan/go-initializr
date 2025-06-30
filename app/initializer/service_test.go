@@ -66,7 +66,6 @@ func TestValidateProjectName(t *testing.T) {
 	}
 }
 
-
 func TestSanitizeProjectName(t *testing.T) {
 	t.Parallel()
 
@@ -139,7 +138,6 @@ func TestValidateModuleName(t *testing.T) {
 		})
 	}
 }
-
 
 func TestSanitizeModuleName(t *testing.T) {
 	t.Parallel()
