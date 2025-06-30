@@ -23,7 +23,7 @@ You can run this project in **two ways**:
 
    ```bash
    docker build -t go-initializr .
-   docker run -d -e PORT=1323 -p 1323:1323 go-initializr
+   docker run -d -e PORT=1323 -e ENV=PRODUCTION -p 1323:1323 go-initializr
    ```
 
 2. **Access the web**
