@@ -60,3 +60,11 @@ type RedisConfig struct {
 	MaxConnLifeTime int
 }
 {{ end }}
+
+type SMTPConfig struct {
+	Host     string
+	Port     int
+	Username string // AKA access key
+	Password string // AKA secret key
+	Sender   string
+}

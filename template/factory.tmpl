@@ -6,6 +6,7 @@ import (
 
 	"{{ .ModuleName }}/internals/pkg/database"
     {{ if .Redis }}
+	"{{ .ModuleName }}/config"
 	"{{ .ModuleName }}/internals/pkg/redisutil" {{ end }}
 )
 
@@ -32,7 +33,8 @@ func (f *Factory) SetupDb() {
 }
 {{ if .Redis }}
 func (f *Factory) SetupRedis() {
-	f.Redis = redisutil.NewRedis()
+	cfg := config.Get().Redis
+	f.Redis = redisutil.NewRedis(cfg)
 } {{ end }}
 
 
