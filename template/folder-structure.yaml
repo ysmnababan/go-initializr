@@ -44,6 +44,13 @@ root/
       validator/
         custom_validator.go
         validator.go
+      testutil/
+        filepath.go
+        otel_container.go
+        otel-collector-config.yaml
+        postgres_container.go
+        smtp_container.go
+        redis_container.go
   demo/
   migrations/
   test/
