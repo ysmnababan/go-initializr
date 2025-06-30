@@ -29,7 +29,7 @@ func (h *handler) InitializeBoilerplate(c echo.Context) (err error) {
 	req := new(BasicConfigRequest)
 	err = c.Bind(req)
 	if err != nil {
-		response.Wrap(response.ErrUnprocessableEntity, fmt.Errorf("error binding: %w", err))
+		return response.Wrap(response.ErrUnprocessableEntity, fmt.Errorf("error binding: %w", err))
 	}
 
 	err = c.Validate(req)
