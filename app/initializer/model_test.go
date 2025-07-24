@@ -18,7 +18,7 @@ func TestParseLine_RealisticTree(t *testing.T) {
 		"    config.go",
 		"    stringutils.go",
 		"    config_models.go",
-		"  internals/",
+		"  internal/",
 		"    abstraction/",
 		"      entity.go",
 		"      pagination.go",
@@ -75,7 +75,7 @@ func TestParseLine_RealisticTree(t *testing.T) {
 	assert.True(t, root.IsFolder)
 
 	// Internals/app/example_feat/controller.go
-	exampleFeat := findNodeByPath(root, "internals", "app", "example_feat")
+	exampleFeat := findNodeByPath(root, "internal", "app", "example_feat")
 	require.NotNil(t, exampleFeat)
 	assert.Equal(t, "example_feat", exampleFeat.Name)
 	assert.True(t, exampleFeat.IsFolder)
@@ -92,7 +92,7 @@ func TestParseLine_RealisticTree(t *testing.T) {
 	assert.False(t, mainGo.IsFolder)
 
 	// Nested file
-	dbGo := findNodeByPath(root, "internals", "pkg", "database", "database.go")
+	dbGo := findNodeByPath(root, "internal", "pkg", "database", "database.go")
 	require.NotNil(t, dbGo)
 	assert.Equal(t, "database.go", dbGo.Name)
 }

@@ -2,10 +2,10 @@ package example_feat
 
 import (
     "fmt"
-    "{{ .ModuleName }}/internals/factory"
-    "{{ .ModuleName }}/internals/utils/response"
+    "{{ .ModuleName }}/internal/factory"
+    "{{ .ModuleName }}/internal/utils/response"
 	{{if .JWT}}
-    "{{ .ModuleName }}/internals/utils/token"
+    "{{ .ModuleName }}/internal/utils/token"
 	{{end}}
 	"errors"
 
