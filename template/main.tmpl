@@ -9,12 +9,12 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"{{ .ModuleName }}/config"
-	middleware "{{ .ModuleName }}/internals/middleware"
-	httpserver "{{ .ModuleName }}/internals/server"
-	"{{ .ModuleName }}/internals/factory"
-	"{{ .ModuleName }}/internals/utils/env"
-	"{{ .ModuleName }}/internals/pkg/database"
-	"{{ .ModuleName }}/internals/pkg/logger"
+	middleware "{{ .ModuleName }}/internal/middleware"
+	httpserver "{{ .ModuleName }}/internal/server"
+	"{{ .ModuleName }}/internal/factory"
+	"{{ .ModuleName }}/internal/utils/env"
+	"{{ .ModuleName }}/internal/pkg/database"
+	"{{ .ModuleName }}/internal/pkg/logger"
 )
 
 func init() {

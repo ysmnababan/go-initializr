@@ -1,18 +1,23 @@
 services:
 {{ if .Redis }}
   redis:
-    image: redis:latest
+    image: redis:7.2.4-alpine
     command: redis-server --requirepass password
     ports:
       - "6379:6379"
     environment:
       - REDIS_PASSWORD=password
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "password", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
     networks:
       - backend
 {{ end }}
 {{ if eq .DB "postgres"}}
   db:
-    image: postgres:latest
+    image: postgres:16.2-alpine
     restart: always
     ports:
       - 5432:5432
@@ -22,6 +27,11 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_USER=admin
       - POSTGRES_DB=mydatabase
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d mydatabase"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
       - backend
 {{ else if eq .DB "mysql"}}
@@ -47,6 +57,11 @@ services:
       - db-data:/var/lib/mysql
     networks:
       - backend
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppass"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 {{end}}
   backend:
     build:
@@ -54,8 +69,10 @@ services:
     container_name: backend
     restart: always
     depends_on:
-      - db {{ if .Redis }}
-      - redis {{end}}
+      db:
+        condition: service_healthy {{ if .Redis }}
+      redis:
+        condition: service_healthy{{end}}
     ports:
       - "1323:1323"
     networks:

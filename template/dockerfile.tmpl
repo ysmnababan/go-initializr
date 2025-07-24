@@ -17,7 +17,7 @@ COPY . .
 RUN go build -o main .
 
 # 🪶 Stage 2: runtime
-FROM alpine:latest
+FROM alpine:3.20
 
 # Set working directory in the final image
 WORKDIR /app

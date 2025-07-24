@@ -11,12 +11,12 @@ import (
 	"github.com/rs/zerolog/log"
 
     {{ if .Redis }}
-    "{{ .ModuleName }}/internals/pkg/redisutil" {{ end }}
+    "{{ .ModuleName }}/internal/pkg/redisutil" {{ end }}
 	
     {{ if .Validator }}
-	"{{ .ModuleName }}/internals/utils/validator" {{ end }}
-	"{{ .ModuleName }}/internals/pkg/logger"
-	"{{ .ModuleName }}/internals/utils/response"
+	"{{ .ModuleName }}/internal/utils/validator" {{ end }}
+	"{{ .ModuleName }}/internal/pkg/logger"
+	"{{ .ModuleName }}/internal/utils/response"
 )
 
 {{ if .Redis }}

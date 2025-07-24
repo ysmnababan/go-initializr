@@ -86,6 +86,9 @@ func main() {
 	version1.GET("/initialize/download/:id", handler.DownloadFolder)
 	version1.POST("/reset-folder", handler.DeleteAllGeneratedProject)
 	port := os.Getenv("PORT")
+	if port == "" {
+		port = "1323" // default for local/dev
+	}
 	e.Logger.Fatal(e.Start(":" + port))
 }
 
